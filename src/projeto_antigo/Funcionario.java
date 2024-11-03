@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+package projeto_antigo;
 
 public class Funcionario extends Usuario{
     private final Departamento departamento;
@@ -8,6 +7,7 @@ public class Funcionario extends Usuario{
         this.departamento = departamento;
     }
 
+    // GET departamento
     public Departamento getDepartamento() {
         return departamento;
     }

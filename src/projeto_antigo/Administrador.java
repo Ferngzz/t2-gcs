@@ -1,4 +1,7 @@
-import java.sql.Array;
+package projeto_antigo;
+
+import data.pedido.Status;
+
 import java.util.*;
 import java.time.LocalDate;
 
@@ -7,6 +10,7 @@ public class Administrador extends Funcionario {
     public Administrador(String nome, Departamento departamento) {
         super(nome, departamento);
     }
+
 
     public Map<Status, List<Pedido>> getPedidos() {
         List<Pedido> pedidos = super.getDepartamento().getPedidos();
@@ -29,6 +33,7 @@ public class Administrador extends Funcionario {
         return result;
     }
 
+    // GET pedidos entre duas datas
     public static List<Pedido> listarPedidosEntreDatas(List<Pedido> listaPedidos, LocalDate dataInicio, LocalDate dataFim) {
         List<Pedido> pedidosFiltrados = new ArrayList<>();
         for (Pedido pedido : listaPedidos) {
@@ -39,6 +44,7 @@ public class Administrador extends Funcionario {
         return pedidosFiltrados;
     }
 
+    // GET todos pedidos do funcionario
     public static List<Pedido> buscarPedidosPorFuncionario(List<Pedido> listaPedidos, Funcionario funcionario) {
         List<Pedido> pedidosFiltrados = new ArrayList<>();
         for (Pedido pedido : listaPedidos) {
@@ -49,6 +55,7 @@ public class Administrador extends Funcionario {
         return pedidosFiltrados;
     }
 
+    // GET todos pedidos que possuem o item
     public static List<Pedido> buscarPedidosPorItem(List<Pedido> listaPedidos, String descricaoItem) {
         List<Pedido> pedidosFiltrados = new ArrayList<>();
         for (Pedido pedido : listaPedidos) {
@@ -66,6 +73,7 @@ public class Administrador extends Funcionario {
         return pedido.toString();
     }
 
+    // GET pedidos do mês
     public List<Pedido> getPedidosDoMes() {
         List<Pedido> pedidosDoMes = new ArrayList<>();
 
@@ -78,6 +86,8 @@ public class Administrador extends Funcionario {
         return pedidosDoMes;
     }
 
+
+    // GET valor gasto em cada item no mês
     public List<String> getValorCadaItem() {
 
         List<Pedido> pedidosDoMes = getPedidosDoMes();
@@ -89,7 +99,7 @@ public class Administrador extends Funcionario {
         }
 
         for (Item item : itens) {
-            //System.out.println("Nome:" + item.getDescricao() + " ID:" + item.getId() + " Valor Unitario:" + item.getValorUnitario());
+            System.out.println("Nome:" + item.getDescricao() + " ID:" + item.getId() + " Valor Unitario:" + item.getValorUnitario());
             double valor = 0.0;
 
             for (Pedido pedido : pedidosDoMes) {
@@ -100,7 +110,7 @@ public class Administrador extends Funcionario {
                     }
                 }
 
-                String itemValue = "Item: %s , Item ID: %d, Valor: %.2f ";
+                String itemValue = "projeto_antigo.Item: %s , projeto_antigo.Item ID: %d, Valor: %.2f ";
                 String itemValueFormat = String.format(itemValue, item.getDescricao(), item.getId(), valor);
 
                 if (!valorCadaItem.contains(itemValueFormat) && valor != 0.0) {
@@ -113,6 +123,7 @@ public class Administrador extends Funcionario {
         return valorCadaItem;
     }
 
+    // GET pedido com maior valor total
     public Pedido getPedidoMaisCaro() {
         List<Pedido> pedidos = super.getDepartamento().getPedidos();
         Pedido pedidoMaisCaro = pedidos.getFirst();

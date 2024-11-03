@@ -1,3 +1,5 @@
+package projeto_antigo;
+
 public class Item {
     private final String descricao;
     private final double valorUnitario;
@@ -13,6 +15,7 @@ public class Item {
 
     }
 
+    // GET id do item
     public int getId() {
         return id;
     }
@@ -21,13 +24,16 @@ public class Item {
         this.valorTotal *= quantidade;
     }
 
+    // GET nome do item
     public String getDescricao() {
         return descricao;
     }
 
+    // GET valor do item
     public double getValorUnitario() {
         return valorUnitario;
     }
+
 
     public double getValorTotal() {
         return valorTotal;

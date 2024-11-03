@@ -1,3 +1,5 @@
+package projeto_antigo;
+
 public abstract class Usuario {
     private String nome;
     private static int count = 0;

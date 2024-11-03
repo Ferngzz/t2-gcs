@@ -1,3 +1,5 @@
+package projeto_antigo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,14 +24,17 @@ public class Departamento {
         return limite;
     }
 
+    // INSERT funcionario
     public boolean cadastraFuncionario(Funcionario funcionario){
         return funcionarios.add(funcionario);   
     }
 
+    // GET ALL Pedidos que são de usuarios do departamento
     public List<Pedido> getPedidos(){
         return pedidos;
     }
 
+    // GET ALL Funcionarios
     public List<Funcionario> getFuncionarios(){
         return funcionarios;
     }

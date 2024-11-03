@@ -1,96 +1,29 @@
+package projeto_antigo;
+
+import data.pedido.Status;
+import data.funcionario.FuncionarioDataSource;
+import data.funcionario.FuncionarioRepository;
+import domain.usecase.InitializeUseCase;
+import domain.usecase.TrocaUsuarioUseCase;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Empresa {
-    private final List<Departamento> departamentos;
-    private final List<Item> estoque;
-    private final List<Usuario> usuarios;
     private final Scanner scanner;
     private Departamento departamento;
     private Usuario usuarioAtivo;
+    private InitializeUseCase initializeUseCase;
+    private TrocaUsuarioUseCase trocaUsuarioUseCase;
 
     public Empresa() {
-        this.departamentos = new ArrayList<>();
-        this.estoque = new ArrayList<>();
-        this.usuarios = new ArrayList<>();
         this.scanner = new Scanner(System.in);
-    }
-
-    private void initDepartamentosIniciais() {
-        String[] nomesDepartametos = {"Financeiro", "Logistico", "RH", "Projetos", "Producao"};
-
-        for (String nome : nomesDepartametos) {
-            Departamento d = new Departamento(nome, 50000);
-            this.departamentos.add(d);
-        }
-    }
-
-    private void addAdministradorDepertamento() {
-        String[] nomeAdministradores = {"Brian", "Bob", "Milton", "Maicon", "Rubens"};
-
-        for (int i = 0; i < departamentos.size(); i++) {
-            Departamento d = departamentos.get(i);
-            Administrador administrador = new Administrador(nomeAdministradores[i], d);
-            d.cadastraFuncionario(administrador);
-            usuarios.add(administrador);
-        }
-    }
-
-    private void addFuncionariosADepartamentos() {
-        //Adicionar n funcionarios em cada departamento (15 min.)
-        Random geraNumeros = new Random();
-        String[] nomesPossiveis = {
-                "Ana", "Carlos", "Fernanda", "João", "Mariana", "Ricardo", "Sofia", "Lucas", "Bruno", "Juliana",
-                "Gabriel", "Laura", "Mateus", "Isabela", "Pedro", "Clara", "Felipe", "Renata", "Vinícius", "Tatiane",
-                "Roberto", "Amanda", "Thiago", "Camila", "Júlio", "Rafael", "Bianca", "André", "Lúcia", "Gustavo",
-                "Julio", "Luciana", "Érica", "Murilo", "Natália", "Alberto", "Priscila", "Leonardo", "Nathalia", "Cíntia"
-        };
-
-        int countNames = nomesPossiveis.length;
-
-        for (Departamento d : departamentos) {
-            for (int i = 0; i < 2; i++) {
-                int indexRandom = geraNumeros.nextInt(countNames);
-                String nomeFuncionario = nomesPossiveis[indexRandom];
-                Funcionario f = new Funcionario(nomeFuncionario, d);
-                d.cadastraFuncionario(f);
-                usuarios.add(f);
-
-            }
-        }
-    }
-
-    private void inicializaPedidos() {
-        for (Usuario usuario : usuarios) {
-            Pedido pedido = new Pedido((Funcionario) usuario);
-
-            String[] possiveisItens = {
-                    "Tinta", "Lapis", "Caneta", "Cafe", "Papel", "Agua", "Grampo", "Lampada"
-            };
-
-            int countItens = possiveisItens.length;
-            int randomIndex = new Random().nextInt(countItens);
-            String nomeItem = possiveisItens[randomIndex];
-
-            Item item = new Item(nomeItem, new Random().nextDouble(0.1,10.50));
-
-            pedido.addItem(item, 5);
-
-            ((Funcionario) usuario).getDepartamento().getPedidos().add(pedido);
-        }
-    }
-
-
-    private void initDados() {
-        initDepartamentosIniciais();
-        addAdministradorDepertamento();
-        addFuncionariosADepartamentos();
-        inicializaPedidos();
+        this.initializeUseCase = new InitializeUseCase(new FuncionarioRepository(new FuncionarioDataSource()));
+        this.trocaUsuarioUseCase = new TrocaUsuarioUseCase();
     }
 
     public void executa() {
-        initDados();
         int opcao;
         boolean trocaDeUsuario = false;
 
@@ -158,11 +91,11 @@ public class Empresa {
         System.out.println("║                     MENU PRINCIPAL                   ║");
         System.out.println("╠══════════════════════════════════════════════════════╣");
         System.out.println("║ 1 - Trocar Usuário                                   ║");
-        System.out.println("║ 2 - Registrar Pedido                                 ║");
-        System.out.println("║ 3 - Exclui Pedido                                    ║");
-        System.out.println("║ 4 - Avalia Pedido                                    ║");
+        System.out.println("║ 2 - Registrar projeto_antigo.Pedido                                 ║");
+        System.out.println("║ 3 - Exclui projeto_antigo.Pedido                                    ║");
+        System.out.println("║ 4 - Avalia projeto_antigo.Pedido                                    ║");
         System.out.println("║ 5 - Listar Pedidos                                   ║");
-        System.out.println("║ 6 - Busca Pedidos Por Funcionario                    ║");
+        System.out.println("║ 6 - Busca Pedidos Por projeto_antigo.Funcionario                    ║");
         System.out.println("║ 7 - Busca Pedidos Por Descricao                      ║");
         System.out.println("║ 8 - Mostra Estatisticas                              ║");
         System.out.println("╚══════════════════════════════════════════════════════╝");
@@ -174,8 +107,8 @@ public class Empresa {
         System.out.println("║                     MENU PRINCIPAL                   ║");
         System.out.println("╠══════════════════════════════════════════════════════╣");
         System.out.println("║ 1 - Trocar Usuário                                   ║");
-        System.out.println("║ 2 - Registrar Pedido                                 ║");
-        System.out.println("║ 3 - Exclui Pedido                                    ║");
+        System.out.println("║ 2 - Registrar projeto_antigo.Pedido                                 ║");
+        System.out.println("║ 3 - Exclui projeto_antigo.Pedido                                    ║");
         System.out.println("╚══════════════════════════════════════════════════════╝");
         System.out.print("Escolha uma opção: ");
     }
@@ -184,23 +117,22 @@ public class Empresa {
         System.out.println("Digite o Codigo do usuario");
         int codigoUsuario = scanner.nextInt();
 
-        for (Usuario u : usuarios) {
-            if (u.getId() == codigoUsuario) {
-                usuarioAtivo = u;
-                System.out.println("╔══════════════════════════════════════════════════════╗");
-                System.out.println("        BEM VINDO " + this.usuarioAtivo.getNome() + " :)");
-                System.out.println("╚══════════════════════════════════════════════════════╝");
-                return true;
-            }
+
+        if (true) {
+            System.out.println("╔══════════════════════════════════════════════════════╗");
+            System.out.println("        BEM VINDO " + this.usuarioAtivo.getNome() + " :)");
+            System.out.println("╚══════════════════════════════════════════════════════╝");
+            return true;
         }
+
 
         System.out.println("╔══════════════════════════════════════════════════════╗");
         System.out.println("║                     FALHA AO LOGAR                   ║");
         System.out.println("╚══════════════════════════════════════════════════════╝");
 
         return false;
-
     }
+
 
     private void excluiPedido() {
         Funcionario funcionario = (Funcionario) usuarioAtivo;
@@ -223,10 +155,10 @@ public class Empresa {
             if (p.getId() == id && p.getStatus().equals(Status.ABERTO) && p.getFuncionario().equals(funcionario)) {
                 pedidoExcluido = p;
                 funcionario.getDepartamento().getPedidos().remove(pedidoExcluido);
-                System.out.println("Pedido Excluído com sucesso!");
+                System.out.println("projeto_antigo.Pedido Excluído com sucesso!");
                 return;
             } else {
-                System.out.println("Pedido não encontrado ou não pode ser excluído!");
+                System.out.println("projeto_antigo.Pedido não encontrado ou não pode ser excluído!");
                 return;
             }
         }
@@ -241,7 +173,7 @@ public class Empresa {
                 boolean pedidoEncontrado = false;
                 for (Pedido p : d.getPedidos()) {
                     if (p.getId() == codigoPedido && p.getStatus().equals(Status.ABERTO)) {
-                        System.out.println("Pedido " + p.getId() + " encontrado. \n" +
+                        System.out.println("projeto_antigo.Pedido " + p.getId() + " encontrado. \n" +
                                 p.toString() +
                                 "\nSelecione uma opção: ");
                         System.out.println("1 - Aprovar pedido.");
@@ -252,12 +184,12 @@ public class Empresa {
                         switch (opcao) {
                             case 1:
                                 p.setStatus(Status.APROVADO);
-                                System.out.println("Pedido aprovado com sucesso!");
+                                System.out.println("projeto_antigo.Pedido aprovado com sucesso!");
                                 break;
                             case 2:
                                 p.setStatus(Status.REPROVADO);
                                 p.setIsAberto(false);
-                                System.out.println("Pedido reprovado com sucesso!");
+                                System.out.println("projeto_antigo.Pedido reprovado com sucesso!");
                                 break;
                             case 3:
                                 return;
@@ -267,17 +199,17 @@ public class Empresa {
                         pedidoEncontrado = true;
                         break;
                     } else if (p.getId() == codigoPedido && !p.isAberto()) {
-                        System.out.println("Pedido " + p.getId() + " encerrado.");
+                        System.out.println("projeto_antigo.Pedido " + p.getId() + " encerrado.");
                         pedidoEncontrado = true;
                         break;
                     } else if (p.getId() == codigoPedido && !p.getStatus().equals(Status.ABERTO) && p.isAberto()) {
-                        System.out.println("Pedido " + p.getId() + " já avaliado.");
+                        System.out.println("projeto_antigo.Pedido " + p.getId() + " já avaliado.");
                         pedidoEncontrado = true;
                         break;
                     }
                 }
                 if (!pedidoEncontrado) {
-                    System.out.println("Pedido não encontrado!");
+                    System.out.println("projeto_antigo.Pedido não encontrado!");
                 }
             }
         }
@@ -296,7 +228,7 @@ public class Empresa {
         }
 
         if (usuario == null) {
-            System.out.println("Usuario não encontrado");
+            System.out.println("projeto_antigo.Usuario não encontrado");
             return;
         }
 
@@ -384,7 +316,7 @@ public class Empresa {
         for (Pedido pedidoAprovado : aprovados) {
             System.out.println(pedidoAprovado);
         }
-        double aprovadosPercent = ((double) aprovados.size() /total.size())*100;
+        double aprovadosPercent = ((double) aprovados.size() / total.size()) * 100;
         System.out.println("Aprovados: " + aprovadosPercent + "%");
 
         System.out.println("╔══════════════════════════════════════════════════════╗");
@@ -393,7 +325,7 @@ public class Empresa {
         for (Pedido pedidoReprovado : reprovados) {
             System.out.println(pedidoReprovado);
         }
-        double reprovadosPercent =  ((double) reprovados.size() /total.size())*100;
+        double reprovadosPercent = ((double) reprovados.size() / total.size()) * 100;
         System.out.println("Reprovados: " + reprovadosPercent + "%");
 
         System.out.println("╔══════════════════════════════════════════════════════╗");
@@ -430,8 +362,7 @@ public class Empresa {
         Funcionario funcionario = (Funcionario) usuarioAtivo;
         Pedido pedido = new Pedido(funcionario);
 
-        String opcao = "0";
-        while (!opcao.equals("-1")) {
+        while (true) {
             System.out.println("Insira um item no pedido");
             System.out.println("Descricao do item (nome):");
             String descricao = scanner.nextLine();
@@ -447,14 +378,12 @@ public class Empresa {
             pedido.addItem(item, quantidade);
 
             System.out.println("Deseja continuar? Se sim, digite qualquer coisa. Se nao, digite -1");
-            opcao = scanner.nextLine();
+            if (scanner.nextLine().equalsIgnoreCase("-1")) {
+                break;
+            }
         }
-
 
         funcionario.getDepartamento().getPedidos().add(pedido);
     }
 
 }
-
-//Fazer com que seja possível definir o usuário ativo.
-//Pedido pode ser excluido somente pelo usuário que o criou (somente quando o status estiver aberto)

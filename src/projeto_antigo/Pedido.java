@@ -1,3 +1,7 @@
+package projeto_antigo;
+
+import data.pedido.Status;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,8 +28,14 @@ public class Pedido {
         this.dataAbertura = LocalDate.now();
         this.valorTotal = 0;
         this.itens = new ArrayList<>();
-        this.status = Status.ABERTO;
-        this.isAberto = true;
+        if (valorTotal > departamento.getLimite()) {
+            this.dataFechamento = LocalDate.now();
+            this.status = Status.REPROVADO;
+            this.isAberto = false;
+        } else {
+            this.status = Status.ABERTO;
+            this.isAberto = true;
+        }
     }
 
     public void addItem(Item item, int quantidade){
@@ -34,53 +44,58 @@ public class Pedido {
         for (int i=0; i < quantidade; i++){
             itens.add(item);
         }
-        if (this.valorTotal > departamento.getLimite()) {
-            this.dataFechamento = LocalDate.now();
-            this.status = Status.REPROVADO;
-            this.isAberto = false;
-        }
     }
 
     public int getId() {
         return id;
     }
 
+
+    // GET funcionario que fez o pedido
     public Funcionario getFuncionario() {
         return this.funcionario;
     }
-
+    // GET departamento do funcionario que fez o pedido
     public Departamento getDepartamento() {
         return this.departamento;
     }
 
+    // GET data de abertura
     public LocalDate getDataAbertura() {
         return this.dataAbertura;
     }
 
+    // GET data de fechamento
     public LocalDate getDataFechamento() {
         return this.dataFechamento;
     }
 
+    // GET status do pedido
     public Status getStatus() {
         return this.status;
     }
 
+    // GET soma dos valores unitarios de cada item do pedido
     public double getValorTotal() {
         return this.valorTotal;
     }
 
+    // GET dos itens do pedido
     public List<Item> getItens(){
         return itens;
     }
 
+    // GET pedidos que estão Abertos / Aprovados
     public boolean isAberto() {
         return isAberto;
     }
 
+    // UPDATE data fechamento
     public void setDataFechamento(final LocalDate dataFechamento) {
         this.dataFechamento = dataFechamento;
     }
 
+    // UPDATE status
     public void setStatus(final Status status) {
         this.status = status;
     }
@@ -92,10 +107,10 @@ public class Pedido {
     public String toString() {
         String dataAberturaString = dataAbertura.format(formatter);
         String dados = "ID: " + this.getId() + "\n"
-                + "Funcionario: " + getFuncionario().getNome() + "\n"
-                + "Departamento: " + departamento.getNome() + "\n"
+                + "projeto_antigo.Funcionario: " + getFuncionario().getNome() + "\n"
+                + "projeto_antigo.Departamento: " + departamento.getNome() + "\n"
                 + "Data de Abertura: " + dataAberturaString + "\n"
-                + "Status: " + status + "\n"
+                + "assets.Status: " + status + "\n"
                 + "Valor Total: " + valorTotal + "\n";
         if (dataFechamento == null) {
             dados += "Data de Fechamento: em Aberto" + "\n";
