@@ -21,8 +21,7 @@ public class DepartamentoRepository {
     public Departamento getDepartamentoById(int id) throws SQLException {
         DepartamentoEntity departamentoEntity = dapartamentoDataSource.getDepartamentoById(id);
 
-        Departamento model = new Departamento(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite());
-        return model;
+        return new Departamento(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite());
     }
 
     public List<Departamento> getAllDepartamentos() throws SQLException {
