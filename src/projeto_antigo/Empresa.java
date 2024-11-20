@@ -1,11 +1,12 @@
 package projeto_antigo;
 
-import data.pedido.Status;
 import data.funcionario.FuncionarioDataSource;
 import data.funcionario.FuncionarioRepository;
-import domain.usecase.InitializeUseCase;
-import domain.usecase.TrocaUsuarioUseCase;
+import db.DatabaseUtils;
+//import domain.usecase.InitializeUseCase;
+//import domain.usecase.TrocaUsuarioUseCase;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -14,16 +15,24 @@ public class Empresa {
     private final Scanner scanner;
     private Departamento departamento;
     private Usuario usuarioAtivo;
-    private InitializeUseCase initializeUseCase;
-    private TrocaUsuarioUseCase trocaUsuarioUseCase;
+//    private InitializeUseCase initializeUseCase;
+//    private TrocaUsuarioUseCase trocaUsuarioUseCase;
 
     public Empresa() {
         this.scanner = new Scanner(System.in);
-        this.initializeUseCase = new InitializeUseCase(new FuncionarioRepository(new FuncionarioDataSource()));
-        this.trocaUsuarioUseCase = new TrocaUsuarioUseCase();
+//        this.initializeUseCase = new InitializeUseCase(new FuncionarioRepository(new FuncionarioDataSource()));
+//        this.trocaUsuarioUseCase = new TrocaUsuarioUseCase();
     }
 
     public void executa() {
+
+        try {
+            DatabaseUtils.openConnection();
+            System.out.println("Conectou porra");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
         int opcao;
         boolean trocaDeUsuario = false;
 
@@ -47,19 +56,19 @@ public class Empresa {
                         excluiPedido();
                         break;
                     case 4:
-                        avaliaPedido();
+//                        avaliaPedido();
                         break;
                     case 5:
                         listarPedidos();
                         break;
                     case 6:
-                        buscaPedidosPorFuncionario();
+//                        buscaPedidosPorFuncionario();
                         break;
                     case 7:
                         buscaPedidosPorDescricao();
                         break;
                     case 8:
-                        mostraEstatisticas();
+//                        mostraEstatisticas();
                         break;
                     default:
                         break;
@@ -164,86 +173,86 @@ public class Empresa {
         }
     }
 
-    private void avaliaPedido() {
-        System.out.println("Informe a ID do pedido: ");
-        int codigoPedido = scanner.nextInt();
-        scanner.nextLine();
-        for (Departamento d : departamentos) {
-            if (((Funcionario) usuarioAtivo).getDepartamento().equals(d)) {
-                boolean pedidoEncontrado = false;
-                for (Pedido p : d.getPedidos()) {
-                    if (p.getId() == codigoPedido && p.getStatus().equals(Status.ABERTO)) {
-                        System.out.println("projeto_antigo.Pedido " + p.getId() + " encontrado. \n" +
-                                p.toString() +
-                                "\nSelecione uma opção: ");
-                        System.out.println("1 - Aprovar pedido.");
-                        System.out.println("2 - Reprovar pedido.");
-                        System.out.println("3 - Sair");
-                        int opcao = scanner.nextInt();
-                        scanner.nextLine();
-                        switch (opcao) {
-                            case 1:
-                                p.setStatus(Status.APROVADO);
-                                System.out.println("projeto_antigo.Pedido aprovado com sucesso!");
-                                break;
-                            case 2:
-                                p.setStatus(Status.REPROVADO);
-                                p.setIsAberto(false);
-                                System.out.println("projeto_antigo.Pedido reprovado com sucesso!");
-                                break;
-                            case 3:
-                                return;
-                            default:
-                                break;
-                        }
-                        pedidoEncontrado = true;
-                        break;
-                    } else if (p.getId() == codigoPedido && !p.isAberto()) {
-                        System.out.println("projeto_antigo.Pedido " + p.getId() + " encerrado.");
-                        pedidoEncontrado = true;
-                        break;
-                    } else if (p.getId() == codigoPedido && !p.getStatus().equals(Status.ABERTO) && p.isAberto()) {
-                        System.out.println("projeto_antigo.Pedido " + p.getId() + " já avaliado.");
-                        pedidoEncontrado = true;
-                        break;
-                    }
-                }
-                if (!pedidoEncontrado) {
-                    System.out.println("projeto_antigo.Pedido não encontrado!");
-                }
-            }
-        }
-    }
-
-    private void buscaPedidosPorFuncionario() {
-        System.out.println("Digite o codigo do usuario");
-        int codigoUsuario = scanner.nextInt();
-        scanner.nextLine();
-        Funcionario usuario = null;
-        for (Usuario u : usuarios) {
-            if (u.getId() == codigoUsuario) {
-                usuario = (Funcionario) u;
-                break;
-            }
-        }
-
-        if (usuario == null) {
-            System.out.println("projeto_antigo.Usuario não encontrado");
-            return;
-        }
-
-        List<Pedido> pedidosDepartamento = usuario.getDepartamento().getPedidos();
-
-        List<Pedido> pedidoUsuario = ((Administrador) usuarioAtivo).buscarPedidosPorFuncionario(pedidosDepartamento, usuario);
-
-        for (Pedido p : pedidoUsuario) {
-            System.out.println("╔══════════════════════════════════════════════════════╗");
-            System.out.println("║                      PEDIDO                          ║");
-            System.out.println("╚══════════════════════════════════════════════════════╝");
-
-            System.out.println(p);
-        }
-    }
+//    private void avaliaPedido() {
+//        System.out.println("Informe a ID do pedido: ");
+//        int codigoPedido = scanner.nextInt();
+//        scanner.nextLine();
+//        for (Departamento d : departamentos) {
+//            if (((Funcionario) usuarioAtivo).getDepartamento().equals(d)) {
+//                boolean pedidoEncontrado = false;
+//                for (Pedido p : d.getPedidos()) {
+//                    if (p.getId() == codigoPedido && p.getStatus().equals(Status.ABERTO)) {
+//                        System.out.println("projeto_antigo.Pedido " + p.getId() + " encontrado. \n" +
+//                                p.toString() +
+//                                "\nSelecione uma opção: ");
+//                        System.out.println("1 - Aprovar pedido.");
+//                        System.out.println("2 - Reprovar pedido.");
+//                        System.out.println("3 - Sair");
+//                        int opcao = scanner.nextInt();
+//                        scanner.nextLine();
+//                        switch (opcao) {
+//                            case 1:
+//                                p.setStatus(Status.APROVADO);
+//                                System.out.println("projeto_antigo.Pedido aprovado com sucesso!");
+//                                break;
+//                            case 2:
+//                                p.setStatus(Status.REPROVADO);
+//                                p.setIsAberto(false);
+//                                System.out.println("projeto_antigo.Pedido reprovado com sucesso!");
+//                                break;
+//                            case 3:
+//                                return;
+//                            default:
+//                                break;
+//                        }
+//                        pedidoEncontrado = true;
+//                        break;
+//                    } else if (p.getId() == codigoPedido && !p.isAberto()) {
+//                        System.out.println("projeto_antigo.Pedido " + p.getId() + " encerrado.");
+//                        pedidoEncontrado = true;
+//                        break;
+//                    } else if (p.getId() == codigoPedido && !p.getStatus().equals(Status.ABERTO) && p.isAberto()) {
+//                        System.out.println("projeto_antigo.Pedido " + p.getId() + " já avaliado.");
+//                        pedidoEncontrado = true;
+//                        break;
+//                    }
+//                }
+//                if (!pedidoEncontrado) {
+//                    System.out.println("projeto_antigo.Pedido não encontrado!");
+//                }
+//            }
+//        }
+//    }
+//
+//    private void buscaPedidosPorFuncionario() {
+//        System.out.println("Digite o codigo do usuario");
+//        int codigoUsuario = scanner.nextInt();
+//        scanner.nextLine();
+//        Funcionario usuario = null;
+//        for (Usuario u : usuarios) {
+//            if (u.getId() == codigoUsuario) {
+//                usuario = (Funcionario) u;
+//                break;
+//            }
+//        }
+//
+//        if (usuario == null) {
+//            System.out.println("projeto_antigo.Usuario não encontrado");
+//            return;
+//        }
+//
+//        List<Pedido> pedidosDepartamento = usuario.getDepartamento().getPedidos();
+//
+//        List<Pedido> pedidoUsuario = ((Administrador) usuarioAtivo).buscarPedidosPorFuncionario(pedidosDepartamento, usuario);
+//
+//        for (Pedido p : pedidoUsuario) {
+//            System.out.println("╔══════════════════════════════════════════════════════╗");
+//            System.out.println("║                      PEDIDO                          ║");
+//            System.out.println("╚══════════════════════════════════════════════════════╝");
+//
+//            System.out.println(p);
+//        }
+//    }
 
     private void buscaPedidosPorDescricao() {
 
@@ -287,76 +296,76 @@ public class Empresa {
         }
     }
 
-    private void mostraEstatisticas() {
-
-        Map<Status, List<Pedido>> pedidos = ((Administrador) usuarioAtivo).getPedidos();
-        List<Pedido> aprovados = pedidos.get(Status.APROVADO);
-        List<Pedido> reprovados = pedidos.get(Status.REPROVADO);
-        List<Pedido> total = pedidos.get(Status.ABERTO);
-        List<Pedido> pedidosDoMes = ((Administrador) usuarioAtivo).getPedidosDoMes();
-        List<String> valorTotalCadaItem = ((Administrador) usuarioAtivo).getValorCadaItem();
-
-        double valorTotal = 0;
-
-        for (Pedido p : pedidosDoMes) {
-            valorTotal += p.getValorTotal();
-        }
-
-        double valorMedio = valorTotal / pedidosDoMes.size();
-
-        Pedido pedidoMaisCaro = ((Administrador) usuarioAtivo).getPedidoMaisCaro();
-
-        System.out.println("╔══════════════════════════════════════════════════════╗");
-        System.out.println("║                     ESTATISTICAS                     ║");
-        System.out.println("╚══════════════════════════════════════════════════════╝");
-
-        System.out.println("╔══════════════════════════════════════════════════════╗");
-        System.out.println("║                   PEDIDOS APROVADO                   ║");
-        System.out.println("╚══════════════════════════════════════════════════════╝");
-        for (Pedido pedidoAprovado : aprovados) {
-            System.out.println(pedidoAprovado);
-        }
-        double aprovadosPercent = ((double) aprovados.size() / total.size()) * 100;
-        System.out.println("Aprovados: " + aprovadosPercent + "%");
-
-        System.out.println("╔══════════════════════════════════════════════════════╗");
-        System.out.println("║                   PEDIDOS REPROVADO                  ║");
-        System.out.println("╚══════════════════════════════════════════════════════╝");
-        for (Pedido pedidoReprovado : reprovados) {
-            System.out.println(pedidoReprovado);
-        }
-        double reprovadosPercent = ((double) reprovados.size() / total.size()) * 100;
-        System.out.println("Reprovados: " + reprovadosPercent + "%");
-
-        System.out.println("╔══════════════════════════════════════════════════════╗");
-        System.out.println("║                PEDIDO DE MAIOR VALOR                 ║");
-        System.out.println("╚══════════════════════════════════════════════════════╝");
-        if (pedidoMaisCaro == null) {
-            System.out.println("Não há pedido");
-        } else {
-            System.out.println(pedidoMaisCaro);
-        }
-
-        System.out.println("╔══════════════════════════════════════════════════════╗");
-        System.out.println("║                    PEDIDOS DO MES                    ║");
-        System.out.println("╚══════════════════════════════════════════════════════╝");
-        for (Pedido pedidoDoMes : pedidosDoMes) {
-            System.out.println(pedidoDoMes);
-        }
-
-        System.out.println("╔══════════════════════════════════════════════════════╗");
-        System.out.println("║              VALOR MEDIO DOS PEDIDOS                 ║");
-        System.out.println("╚══════════════════════════════════════════════════════╝");
-        System.out.println(valorMedio);
-
-        System.out.println("╔══════════════════════════════════════════════════════╗");
-        System.out.println("║                  VALOR DE CADA ITEM                  ║");
-        System.out.println("╚══════════════════════════════════════════════════════╝");
-        for (String valorCadaItem : valorTotalCadaItem) {
-            System.out.println(valorCadaItem);
-        }
-
-    }
+//    private void mostraEstatisticas() {
+//
+//        Map<Status, List<Pedido>> pedidos = ((Administrador) usuarioAtivo).getPedidos();
+//        List<Pedido> aprovados = pedidos.get(Status.APROVADO);
+//        List<Pedido> reprovados = pedidos.get(Status.REPROVADO);
+//        List<Pedido> total = pedidos.get(Status.ABERTO);
+//        List<Pedido> pedidosDoMes = ((Administrador) usuarioAtivo).getPedidosDoMes();
+//        List<String> valorTotalCadaItem = ((Administrador) usuarioAtivo).getValorCadaItem();
+//
+//        double valorTotal = 0;
+//
+//        for (Pedido p : pedidosDoMes) {
+//            valorTotal += p.getValorTotal();
+//        }
+//
+//        double valorMedio = valorTotal / pedidosDoMes.size();
+//
+//        Pedido pedidoMaisCaro = ((Administrador) usuarioAtivo).getPedidoMaisCaro();
+//
+//        System.out.println("╔══════════════════════════════════════════════════════╗");
+//        System.out.println("║                     ESTATISTICAS                     ║");
+//        System.out.println("╚══════════════════════════════════════════════════════╝");
+//
+//        System.out.println("╔══════════════════════════════════════════════════════╗");
+//        System.out.println("║                   PEDIDOS APROVADO                   ║");
+//        System.out.println("╚══════════════════════════════════════════════════════╝");
+//        for (Pedido pedidoAprovado : aprovados) {
+//            System.out.println(pedidoAprovado);
+//        }
+//        double aprovadosPercent = ((double) aprovados.size() / total.size()) * 100;
+//        System.out.println("Aprovados: " + aprovadosPercent + "%");
+//
+//        System.out.println("╔══════════════════════════════════════════════════════╗");
+//        System.out.println("║                   PEDIDOS REPROVADO                  ║");
+//        System.out.println("╚══════════════════════════════════════════════════════╝");
+//        for (Pedido pedidoReprovado : reprovados) {
+//            System.out.println(pedidoReprovado);
+//        }
+//        double reprovadosPercent = ((double) reprovados.size() / total.size()) * 100;
+//        System.out.println("Reprovados: " + reprovadosPercent + "%");
+//
+//        System.out.println("╔══════════════════════════════════════════════════════╗");
+//        System.out.println("║                PEDIDO DE MAIOR VALOR                 ║");
+//        System.out.println("╚══════════════════════════════════════════════════════╝");
+//        if (pedidoMaisCaro == null) {
+//            System.out.println("Não há pedido");
+//        } else {
+//            System.out.println(pedidoMaisCaro);
+//        }
+//
+//        System.out.println("╔══════════════════════════════════════════════════════╗");
+//        System.out.println("║                    PEDIDOS DO MES                    ║");
+//        System.out.println("╚══════════════════════════════════════════════════════╝");
+//        for (Pedido pedidoDoMes : pedidosDoMes) {
+//            System.out.println(pedidoDoMes);
+//        }
+//
+//        System.out.println("╔══════════════════════════════════════════════════════╗");
+//        System.out.println("║              VALOR MEDIO DOS PEDIDOS                 ║");
+//        System.out.println("╚══════════════════════════════════════════════════════╝");
+//        System.out.println(valorMedio);
+//
+//        System.out.println("╔══════════════════════════════════════════════════════╗");
+//        System.out.println("║                  VALOR DE CADA ITEM                  ║");
+//        System.out.println("╚══════════════════════════════════════════════════════╝");
+//        for (String valorCadaItem : valorTotalCadaItem) {
+//            System.out.println(valorCadaItem);
+//        }
+//
+//    }
 
     private void registrarPedido() {
         Funcionario funcionario = (Funcionario) usuarioAtivo;

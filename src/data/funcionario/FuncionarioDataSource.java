@@ -11,10 +11,11 @@ public class FuncionarioDataSource {
     }
 
     public FuncionarioEntity getFuncionarioById(int id){
-
+        return null;
     }
 
     public List<FuncionarioEntity> getFuncionarios(){
+        return null;
 
     }
 

@@ -1,6 +1,5 @@
 package projeto_antigo;
 
-import data.pedido.Status;
 
 import java.util.*;
 import java.time.LocalDate;

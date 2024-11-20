@@ -13,12 +13,13 @@ public class FuncionarioRepository {
 
     public void cadastra(Funcionario funcionario) {
         var entity = new FuncionarioEntity(funcionario);
-        funcionarioDataSource.cadastra(entity);
+        funcionarioDataSource.createFuncionario(entity);
     }
 
     public Funcionario getFuncionario(int id){
         // GET funcionario por id
 
-        return new Funcionario();
+//        return new Funcionario();
+        return null;
     }
 }
