@@ -6,6 +6,7 @@ import db.DatabaseUtils;
 //import domain.usecase.InitializeUseCase;
 //import domain.usecase.TrocaUsuarioUseCase;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +33,40 @@ public class Empresa {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        String query = "SELECT * FROM FUNCIONARIO";
+        String queryParam = "SELECT * FROM FUNCIONARIO f WHERE f.nome = ? AND f.cargo = ?";
+
+
+        try {
+            ResultSet result = DatabaseUtils.executeQuery(queryParam, "Michael", "Administrador");
+            while (result.next()) {
+                System.out.println(
+                        "ID: " + result.getString(1) + "\n" +
+                                "Nome: " + result.getString(2) + "\n" +
+                                "Cargo: " + result.getString(3) + "\n" +
+                                "ID_Departamento: " + result.getString(4) + "\n"
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+//        try {
+//            ResultSet result = DatabaseUtils.executeQueryNoParam(query);
+//
+//            while (result.next()) {
+//                System.out.println(
+//                        "ID: " + result.getString(1) + "\n" +
+//                        "Nome: " + result.getString(2) + "\n" +
+//                        "Cargo: " + result.getString(3) + "\n" +
+//                        "ID_Departamento: " + result.getString(4) + "\n"
+//                );
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
         int opcao;
         boolean trocaDeUsuario = false;

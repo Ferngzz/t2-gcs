@@ -7,7 +7,7 @@ public class DatabaseUtils {
 
     public static void openConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
-            String url = "jdbc:mysql://localhost:3306/t2gcs";
+            String url = "jdbc:mysql://localhost:3306/t2gcs?useSSL=false&serverTimezone=UTC";
             String user = "root";
             String password = "root";
 
@@ -28,6 +28,12 @@ public class DatabaseUtils {
         PreparedStatement stmt = connection.prepareStatement(sql);
         setParameters(stmt, params);
         return stmt.executeQuery();
+    }
+
+    public static ResultSet executeQueryNoParam(String sql) throws SQLException {
+        openConnection();
+        Statement stmt = connection.createStatement();
+        return stmt.executeQuery(sql);
     }
 
     public static int executeUpdate(String sql, Object... params) throws SQLException {
