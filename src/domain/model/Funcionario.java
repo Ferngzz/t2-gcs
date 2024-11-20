@@ -5,11 +5,12 @@ import data.funcionario.Cargo;
 public record Funcionario(
         int id,
         String nome,
-        int idDepartamento,
+        String departamento,
         Cargo cargo
 ) {
 
-    public int idFuncionario(){
+
+    public int idFuncionario() {
         return this.id;
     }
 }

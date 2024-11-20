@@ -23,7 +23,9 @@ public class FuncionarioDataSource {
 
     public Funcionario getFuncionarioById(int id) throws SQLException {
 
-        String getFuncionarioByIdQuery = "SELECT * FROM FUNCIONARIO f WHERE f.id_funcionario=?";
+        String getFuncionarioByIdQuery = "SELECT f.*, d.nome FROM FUNCIONARIO f " +
+                "JOIN DEPARTAMENTO d ON f.id_departamento = d.id_departamento " +
+                "WHERE f.id_funcionario=?";
 
         ResultSet resultFuncionario = DatabaseUtils.executeQuery(getFuncionarioByIdQuery, id);
 
@@ -38,15 +40,15 @@ public class FuncionarioDataSource {
         return new Funcionario(
                 resultFuncionario.getInt(1),
                 resultFuncionario.getString(2),
-                resultFuncionario.getInt(3),
+                resultFuncionario.getString(5),
                 cargo
         );
-
     }
 
     public List<Funcionario> getFuncionarios() throws SQLException {
 
-        String getFuncionariosQuery = "SELECT * FROM FUNCIONARIO";
+        String getFuncionariosQuery = "SELECT f.*, d.nome FROM FUNCIONARIO f " +
+                "JOIN DEPARTAMENTO d ON f.id_departamento = d.id_departamento ";
         ResultSet resultFuncionario = DatabaseUtils.executeQuery(getFuncionariosQuery);
 
         List<Funcionario> funcionarios = new ArrayList<>();
@@ -63,7 +65,7 @@ public class FuncionarioDataSource {
             funcionarios.add(new Funcionario(
                     resultFuncionario.getInt(1),
                     resultFuncionario.getString(2),
-                    resultFuncionario.getInt(3),
+                    resultFuncionario.getString(5),
                     cargo
             ));
         }
