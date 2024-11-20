@@ -11,8 +11,8 @@ import java.util.List;
 public class FuncionarioRepository {
     private final FuncionarioDataSource funcionarioDataSource;
 
-    public FuncionarioRepository(FuncionarioDataSource funcionarioDataSource) {
-        this.funcionarioDataSource = funcionarioDataSource;
+    public FuncionarioRepository() {
+        this.funcionarioDataSource = new FuncionarioDataSource();
     }
 
     public void cadastraFuncionario(Funcionario funcionario) throws SQLException {
@@ -22,9 +22,9 @@ public class FuncionarioRepository {
 
     // GET funcionario por id
     public Funcionario getFuncionarioById(int id) throws SQLException{
-        FuncionarioEntity entity = funcionarioDataSource.getFuncionarioById(id);
+        Funcionario entity = funcionarioDataSource.getFuncionarioById(id);
 
-        Funcionario model = new Funcionario(
+        return new Funcionario(
                 id,
                 entity.nome(),
                 entity.idDepartamento(),
@@ -32,21 +32,19 @@ public class FuncionarioRepository {
         );
 
 
-        return model;
     }
 
     public List<Funcionario> getAllFuncionarios() throws SQLException{
-        List<FuncionarioEntity> entities = funcionarioDataSource.getFuncionarios();
+        List<Funcionario> entities = funcionarioDataSource.getFuncionarios();
         List<Funcionario> funcionarioModels = new ArrayList<>();
 
-        entities.forEach(entity -> {
-            funcionarioModels.add(new Funcionario(
-                    entity.id(),
-                    entity.nome(),
-                    entity.idDepartamento(),
-                    entity.cargo()
-            ));
-        });
+        entities.forEach(entity ->
+                funcionarioModels.add(new Funcionario(
+                        entity.id(),
+                        entity.nome(),
+                        entity.idDepartamento(),
+                        entity.cargo()
+                )));
         return funcionarioModels;
     }
 

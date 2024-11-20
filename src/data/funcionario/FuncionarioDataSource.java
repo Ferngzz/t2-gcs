@@ -1,6 +1,7 @@
 package data.funcionario;
 
 import db.DatabaseUtils;
+import domain.model.Funcionario;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ public class FuncionarioDataSource {
                 funcionarioEntity.idDepartamento());
     }
 
-    public FuncionarioEntity getFuncionarioById(int id) throws SQLException {
+    public Funcionario getFuncionarioById(int id) throws SQLException {
 
         String getFuncionarioByIdQuery = "SELECT * FROM FUNCIONARIO f WHERE f.id_funcionario=?";
 
@@ -34,7 +35,7 @@ public class FuncionarioDataSource {
             cargo = Cargo.ADMINISTRADOR;
         }
 
-        return new FuncionarioEntity(
+        return new Funcionario(
                 resultFuncionario.getInt(1),
                 resultFuncionario.getString(2),
                 resultFuncionario.getInt(3),
@@ -43,12 +44,12 @@ public class FuncionarioDataSource {
 
     }
 
-    public List<FuncionarioEntity> getFuncionarios() throws SQLException {
+    public List<Funcionario> getFuncionarios() throws SQLException {
 
         String getFuncionariosQuery = "SELECT * FROM FUNCIONARIO";
         ResultSet resultFuncionario = DatabaseUtils.executeQuery(getFuncionariosQuery);
 
-        List<FuncionarioEntity> funcionarios = new ArrayList<>();
+        List<Funcionario> funcionarios = new ArrayList<>();
 
         while (resultFuncionario.next()) {
             Cargo cargo;
@@ -59,7 +60,7 @@ public class FuncionarioDataSource {
                 cargo = Cargo.ADMINISTRADOR;
             }
 
-            funcionarios.add(new FuncionarioEntity(
+            funcionarios.add(new Funcionario(
                     resultFuncionario.getInt(1),
                     resultFuncionario.getString(2),
                     resultFuncionario.getInt(3),
