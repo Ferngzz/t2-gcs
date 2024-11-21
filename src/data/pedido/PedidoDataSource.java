@@ -1,14 +1,16 @@
 package data.pedido;
 
+import domain.model.Pedido;
+import domain.model.Departamento;
+import domain.model.Funcionario;
 import data.item.ItemEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.zip.DeflaterOutputStream;
 
 import javax.management.RuntimeErrorException;
 import db.DatabaseUtils;
-
 //import java.util.*;
 import java.sql.*;
 import java.time.LocalDate;
@@ -29,43 +31,60 @@ public class PedidoDataSource {
     }
 }
 
-    public PedidoEntity getPedidoById(int id){
-        String query = "SELECT * FROM PEDIDO p where p.id = ?";
+public Pedido getPedidoById(int id){
+    String query = "SELECT f.nome as 'NomeFuncionario' , d.nome as 'NomeDepartamento' , p.* FROM FUNCIONARIO f " +
+            "JOIN DEPARTAMENTO d ON f.id_departamento = d.id_departamento " +
+            "JOIN PEDIDO p ON f.id_funcionario = p.id_funcionario where p.id_pedido = ?";
 
-        try{
-            ResultSet result = DatabaseUtils.executeQuery(query, id);
-            result.next();
-                Date dataAbertura = result.getDate(2);
-                LocalDate localDate = dataAbertura.toLocalDate();
-                Date dataFechamento = result.getDate(3);
-                LocalDate localDate2 =  dataFechamento.toLocalDate();
-                int idFuncionario = result.getInt(4);
-                int status = result.getInt(5);
+    try{
+        ResultSet result = DatabaseUtils.executeQuery(query, id);
+        result.next();
+           //Pedido
+            int id_pedido = result.getInt("id_pedido");
+            Date dataAbertura = result.getDate("data_abertura");
+            LocalDate localDate = dataAbertura.toLocalDate();
+            Date dataFechamento = result.getDate("data_fechamento");
+            LocalDate localDate2 =  dataFechamento.toLocalDate();
 
-            PedidoEntity pedido = new PedidoEntity(localDate, localDate2, idFuncionario, status);
-            return pedido;
+            //Funcionario
+            String nomeFuncionario = result.getString("NomeFuncionario");
             
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+           //Departamento
+            String nomeDepartamento = result.getString("NomeDepartamento");
 
-
+        return new Pedido(id_pedido, localDate, localDate2, nomeDepartamento, nomeFuncionario);
+        
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
     }
 
-    public List<PedidoEntity> getPedidos(){
-        String query = "SELECT * FROM PEDIDO";
-        List<PedidoEntity> pedidosBanco = new ArrayList<>();
+
+}
+
+
+    public List<Pedido> getPedidos(){
+        String query = "SELECT f.nome as 'NomeFuncionario' , d.nome as 'NomeDepartamento' , p.* FROM FUNCIONARIO f " +
+            "JOIN DEPARTAMENTO d ON f.id_departamento = d.id_departamento " +
+            "JOIN PEDIDO p ON f.id_funcionario = p.id_funcionario";
+        List<Pedido> pedidosBanco = new ArrayList<>();
 
         try{
             ResultSet result = DatabaseUtils.executeQuery(query);
             while(result.next()){
+                //Pedido
+                int id_pedido = result.getInt("id_pedido");
                 Date dataAbertura = result.getDate(2);
                 LocalDate localDate = dataAbertura.toLocalDate();
                 Date dataFechamento = result.getDate(3);
                 LocalDate localDate2 =  dataFechamento.toLocalDate();
-                int idFuncionario = result.getInt(4);
-                int status = result.getInt(5);
-                pedidosBanco.add(new PedidoEntity(localDate, localDate2, status, idFuncionario));
+
+                //Funcionario
+                String nomeFuncionario = result.getString("NomeFuncionario");
+
+                //Departamento
+                String nomeDepartamento = result.getString("NomeDepartamento");
+
+                pedidosBanco.add(new Pedido(id_pedido, localDate, localDate2, nomeDepartamento , nomeFuncionario));
             }  
             
             
