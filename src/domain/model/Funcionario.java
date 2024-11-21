@@ -9,7 +9,6 @@ public record Funcionario(
         Cargo cargo
 ) {
 
-
     public int idFuncionario() {
         return this.id;
     }
