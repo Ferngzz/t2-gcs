@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.management.RuntimeErrorException;
-import DB.DataBaseUtils;
+import db.DatabaseUtils;
 
 //import java.util.*;
 import java.sql.*;
@@ -21,7 +21,7 @@ public class PedidoDataSource {
     String query = "INSERT INTO PEDIDO(data_abertura, data_fechamento, id_funcionario) VALUES (?, ?, ?)";
 
     try {
-        DataBaseUtils.executeUpdate(query, pedidoEntity.dataAbertura(), pedidoEntity.dataFechamento(), pedidoEntity.idFuncionario());
+        DatabaseUtils.executeUpdate(query, pedidoEntity.dataAbertura(), pedidoEntity.dataFechamento(), pedidoEntity.idFuncionario());
         System.out.println("Pedido criado com sucesso!");
 
     } catch (SQLException e) {
@@ -33,7 +33,7 @@ public class PedidoDataSource {
         String query = "SELECT * FROM PEDIDO p where p.id = ?";
 
         try{
-            ResultSet result = DataBaseUtils.executeQuery(query, id);
+            ResultSet result = DatabaseUtils.executeQuery(query, id);
             result.next();
                 Date dataAbertura = result.getDate(2);
                 LocalDate localDate = dataAbertura.toLocalDate();
@@ -57,7 +57,7 @@ public class PedidoDataSource {
         List<PedidoEntity> pedidosBanco = new ArrayList<>();
 
         try{
-            ResultSet result = DataBaseUtils.executeQuery(query);
+            ResultSet result = DatabaseUtils.executeQuery(query);
             while(result.next()){
                 Date dataAbertura = result.getDate(2);
                 LocalDate localDate = dataAbertura.toLocalDate();
@@ -80,7 +80,7 @@ public class PedidoDataSource {
         String updateQuery = "UPDATE PEDIDO p SET STATUS = ? WHERE p.id_pedido = ? ";
 
         try{
-            DataBaseUtils.executeUpdate(updateQuery, novoStatus, id);
+            DatabaseUtils.executeUpdate(updateQuery, novoStatus, id);
             
         } catch (SQLException e){
             throw new RuntimeException(e);
@@ -91,7 +91,7 @@ public class PedidoDataSource {
     public void deletePedido(int id){
         String deleteQuery = "DELETE FROM PEDIDO p WHERE P.id = ?";
         try{
-        DataBaseUtils.executeUpdate(deleteQuery, id);
+        DatabaseUtils.executeUpdate(deleteQuery, id);
         System.out.println("Pedido excluído com sucesso!");
 
         } catch (SQLException e) {
