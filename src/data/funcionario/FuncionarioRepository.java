@@ -27,7 +27,7 @@ public class FuncionarioRepository {
         return new Funcionario(
                 id,
                 entity.nome(),
-                entity.idDepartamento(),
+                entity.departamento(),
                 entity.cargo()
         );
 
@@ -42,7 +42,7 @@ public class FuncionarioRepository {
                 funcionarioModels.add(new Funcionario(
                 entity.id(),
                 entity.nome(),
-                entity.idDepartamento(),
+                entity.departamento(),
                 entity.cargo()
         )));
         return funcionarioModels;

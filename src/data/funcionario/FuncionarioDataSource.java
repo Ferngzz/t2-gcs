@@ -18,7 +18,7 @@ public class FuncionarioDataSource {
         DatabaseUtils.executeUpdate(createQuery,
                 funcionarioEntity.nome(),
                 funcionarioEntity.cargo(),
-                funcionarioEntity.idDepartamento());
+                funcionarioEntity.departamento());
     }
 
     public Funcionario getFuncionarioById(int id) throws SQLException {

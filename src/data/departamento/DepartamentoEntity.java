@@ -4,14 +4,12 @@ import domain.model.Departamento;
 
 public record DepartamentoEntity(
         String nome,
-        double limite,
-        int idDepartamento
+        double limite
 ){
     public DepartamentoEntity(Departamento departamento) {
         this(
                 departamento.nome(),
-                departamento.limite(),
-                departamento.id()
+                departamento.limite()
         );
     }
 }
