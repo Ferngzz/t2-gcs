@@ -1,6 +1,7 @@
 package data.departamento;
 
 import db.DatabaseUtils;
+import domain.model.DepartamentoGet;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class DepartamentoDataSource {
         return DatabaseUtils.executeInsert(query,departamentoEntity.limite(),departamentoEntity.nome());
     }
 
-    public DepartamentoEntity getDepartamentoById(int id) throws SQLException {
+    public DepartamentoGet getDepartamentoById(int id) throws SQLException {
         String query = "SELECT * FROM DEPARTAMENTO WHERE id_departamento = ?";
 
         ResultSet rs = DatabaseUtils.executeQuery(query,id);
@@ -25,23 +26,22 @@ public class DepartamentoDataSource {
         double limite = rs.getDouble(2);
         String nomeDepartamento = rs.getString(3);
 
-        DepartamentoEntity departamentoEntity = new DepartamentoEntity(nomeDepartamento,limite,idDepartamento);
-        return departamentoEntity;
+        return new DepartamentoGet(idDepartamento,nomeDepartamento,limite);
     }
 
-    public List<DepartamentoEntity> getDepartamentos() throws SQLException {
+    public List<DepartamentoGet> getDepartamentos() throws SQLException {
         String query = "SELECT * FROM DEPARTAMENTO";
         ResultSet rs = DatabaseUtils.executeQueryNoParam(query);
-        List<DepartamentoEntity> departamentoEntityList = new ArrayList<DepartamentoEntity>();
+        List<DepartamentoGet> departamentos= new ArrayList<DepartamentoGet>();
 
         while(rs.next()){
             int idDepartamento = rs.getInt(1);
             double limite = rs.getDouble(2);
             String nomeDepartamento = rs.getString(3);
 
-            departamentoEntityList.add(new DepartamentoEntity(nomeDepartamento,limite,idDepartamento));
+            departamentos.add(new DepartamentoGet(idDepartamento,nomeDepartamento,limite));
         }
-        return departamentoEntityList;
+        return departamentos;
     }
 
 
