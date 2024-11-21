@@ -1,6 +1,7 @@
 package data.item;
 
-import domain.model.Item;
+import domain.model.ItemGet;
+import domain.model.ItemInsert;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,28 +16,28 @@ public class ItemRepository {
         this.itemDataSource = new ItemDataSource();
     }
 
-    public void cadastraItem(Item item) throws SQLException {
+    public void cadastraItem(ItemInsert item) throws SQLException {
         var entity = new ItemEntity(item);
         itemDataSource.createItem(entity);
     }
 
     // GET item por id
-    public Item getItemById(int id) throws SQLException {
-        Item entity = itemDataSource.getItemById(id);
+    public ItemGet getItemById(int id) throws SQLException {
+        ItemGet entity = itemDataSource.getItemById(id);
 
-        return new Item(
+        return new ItemGet(
                 id,
                 entity.nome(),
                 entity.valorUnitario()
         );
     }
 
-    public List<Item> getAllItens() throws SQLException {
-        List<Item> entities = itemDataSource.getItens();
-        List<Item> itemModels = new ArrayList<>();
+    public List<ItemGet> getAllItens() throws SQLException {
+        List<ItemGet> entities = itemDataSource.getItens();
+        List<ItemGet> itemModels = new ArrayList<>();
 
         entities.forEach(entity ->
-                itemModels.add(new Item(
+                itemModels.add(new ItemGet(
                         entity.idItem(),
                         entity.nome(),
                         entity.valorUnitario()

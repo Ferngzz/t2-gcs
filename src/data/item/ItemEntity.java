@@ -1,12 +1,12 @@
 package data.item;
 
-import domain.model.Item;
+import domain.model.ItemInsert;
 
 public record ItemEntity(
         String nome,
         double valorUnitario
 ) {
-    public ItemEntity(Item item) {
+    public ItemEntity(ItemInsert item) {
         this(
                 item.nome(),
                 item.valorUnitario()

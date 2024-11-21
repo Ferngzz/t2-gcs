@@ -1,11 +1,10 @@
-package data.pedido;
-
+package domain.model;
 
 import java.time.LocalDate;
 
-public record PedidoEntity(
+public record PedidoInsert(
         LocalDate dataAbertura,
         LocalDate dataFechamento,
-        int idFuncionario
+        String funcionario
 ) {
 }

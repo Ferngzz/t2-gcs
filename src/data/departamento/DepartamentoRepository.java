@@ -1,6 +1,6 @@
 package data.departamento;
 
-import domain.model.Departamento;
+import domain.model.DepartamentoGet;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,23 +13,23 @@ public class DepartamentoRepository {
        this.dapartamentoDataSource = new DepartamentoDataSource();
     }
 
-    public void createDepartamento(Departamento departamento) throws SQLException {
+    public void createDepartamento(DepartamentoGet departamento) throws SQLException {
         DepartamentoEntity departamentoEntity = new DepartamentoEntity(departamento);
         dapartamentoDataSource.createDepartamento(departamentoEntity);
     }
 
-    public Departamento getDepartamentoById(int id) throws SQLException {
+    public DepartamentoGet getDepartamentoById(int id) throws SQLException {
         DepartamentoEntity departamentoEntity = dapartamentoDataSource.getDepartamentoById(id);
 
-        return new Departamento(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite());
+        return new DepartamentoGet(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite());
     }
 
-    public List<Departamento> getAllDepartamentos() throws SQLException {
+    public List<DepartamentoGet> getAllDepartamentos() throws SQLException {
         List<DepartamentoEntity> departamentos = dapartamentoDataSource.getDepartamentos();
-        List<Departamento> models = new ArrayList<>();
+        List<DepartamentoGet> models = new ArrayList<>();
 
         for (DepartamentoEntity departamentoEntity : departamentos) {
-            models.add(new Departamento(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite()));
+            models.add(new DepartamentoGet(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite()));
         }
         return models;
     }

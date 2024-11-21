@@ -1,6 +1,6 @@
 package domain.model;
 
-public record Departamento(
+public record DepartamentoGet(
         int id,
         String nome,
         double limite

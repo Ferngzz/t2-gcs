@@ -43,6 +43,23 @@ public class DatabaseUtils {
         return stmt.executeUpdate();
     }
 
+    public static int executeInsert(String sql, Object... params) throws SQLException {
+        openConnection();
+        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        setParameters(stmt, params);
+        int affectedRows = stmt.executeUpdate();
+
+        if (affectedRows > 0) {
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
+        }
+
+        return -1;
+    }
+
     private static void setParameters(PreparedStatement stmt, Object... params) throws SQLException {
         for (int i = 0; i < params.length; i++) {
             stmt.setObject(i + 1, params[i]);

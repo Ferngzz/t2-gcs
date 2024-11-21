@@ -1,7 +1,7 @@
 package domain.model;
 
-public record Item(
-        int idItem,
+public record ItemGet(
+        int id,
         String nome,
         double valorUnitario
 ) {

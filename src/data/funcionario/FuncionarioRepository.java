@@ -1,6 +1,6 @@
 package data.funcionario;
 
-import domain.model.Funcionario;
+import domain.model.FuncionarioGet;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,16 +15,16 @@ public class FuncionarioRepository {
         this.funcionarioDataSource = new FuncionarioDataSource();
     }
 
-    public void cadastraFuncionario(Funcionario funcionario) throws SQLException {
+    public void cadastraFuncionario(FuncionarioGet funcionario) throws SQLException {
         var entity = new FuncionarioEntity(funcionario);
         funcionarioDataSource.createFuncionario(entity);
     }
 
     // GET funcionario por id
-    public Funcionario getFuncionarioById(int id) throws SQLException{
-        Funcionario entity = funcionarioDataSource.getFuncionarioById(id);
+    public FuncionarioGet getFuncionarioById(int id) throws SQLException{
+        FuncionarioGet entity = funcionarioDataSource.getFuncionarioById(id);
 
-        return new Funcionario(
+        return new FuncionarioGet(
                 id,
                 entity.nome(),
                 entity.departamento(),
@@ -34,12 +34,12 @@ public class FuncionarioRepository {
 
     }
 
-    public List<Funcionario> getAllFuncionarios() throws SQLException{
-        List<Funcionario> entities = funcionarioDataSource.getFuncionarios();
-        List<Funcionario> funcionarioModels = new ArrayList<>();
+    public List<FuncionarioGet> getAllFuncionarios() throws SQLException{
+        List<FuncionarioGet> entities = funcionarioDataSource.getFuncionarios();
+        List<FuncionarioGet> funcionarioModels = new ArrayList<>();
 
         entities.forEach(entity ->
-                funcionarioModels.add(new Funcionario(
+                funcionarioModels.add(new FuncionarioGet(
                 entity.id(),
                 entity.nome(),
                 entity.departamento(),

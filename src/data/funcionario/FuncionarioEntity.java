@@ -1,6 +1,6 @@
 package data.funcionario;
 
-import domain.model.Funcionario;
+import domain.model.FuncionarioGet;
 
 // Entidades do banco de dados
 public record FuncionarioEntity(
@@ -8,7 +8,7 @@ public record FuncionarioEntity(
         String departamento,
         Cargo cargo
 ) {
-    public FuncionarioEntity(Funcionario funcionario) {
+    public FuncionarioEntity(FuncionarioGet funcionario) {
         this(
                 funcionario.nome(),
                 funcionario.departamento(),

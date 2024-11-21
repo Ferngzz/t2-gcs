@@ -1,7 +1,8 @@
 package data.item;
 
 import db.DatabaseUtils;
-import domain.model.Item;
+import domain.model.ItemGet;
+import domain.model.ItemInsert;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,39 +13,39 @@ import java.util.List;
 // CRUD/Integracao do banco
 public class ItemDataSource {
 
-    public void createItem(ItemEntity itemEntity) throws SQLException {
+    public int createItem(ItemEntity item) throws SQLException {
         String createQuery = "INSERT INTO FUNCIONARIO (nome, valor_unitario ) VALUES (?, ?)";
 
-        DatabaseUtils.executeUpdate(createQuery,
-                itemEntity.nome(),
-                itemEntity.valorUnitario()
+        return DatabaseUtils.executeInsert(createQuery,
+                item.nome(),
+                item.valorUnitario()
         );
     }
 
-    public Item getItemById(int id) throws SQLException {
+    public ItemGet getItemById(int id) throws SQLException {
 
         String getItemByIdQuery = "SELECT * FROM ITEM i WHERE i.id_item = ?";
 
         ResultSet resultItem = DatabaseUtils.executeQuery(getItemByIdQuery, id);
 
-        return new Item(
+        return new ItemGet(
                 resultItem.getInt(1),
                 resultItem.getString(3),
                 resultItem.getDouble(2)
         );
     }
 
-    public List<Item> getItens() throws SQLException {
+    public List<ItemGet> getItens() throws SQLException {
 
         String getItensQuery = "SELECT * FROM ITEM";
         ResultSet resultItens = DatabaseUtils.executeQuery(getItensQuery);
 
-        List<Item> itens = new ArrayList<>();
+        List<ItemGet> itens = new ArrayList<>();
 
         while (resultItens.next()) {
 
 
-            itens.add(new Item(
+            itens.add(new ItemGet(
                     resultItens.getInt(1),
                     resultItens.getString(3),
                     resultItens.getDouble(2)

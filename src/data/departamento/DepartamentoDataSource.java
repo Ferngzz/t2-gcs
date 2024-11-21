@@ -11,9 +11,9 @@ import java.util.List;
 // CRUD/Integracao do banco
 public class DepartamentoDataSource {
 
-    public void createDepartamento(DepartamentoEntity departamentoEntity) throws SQLException {
+    public int createDepartamento(DepartamentoEntity departamentoEntity) throws SQLException {
         String query = "INSERT INTO DEPARTAMENTO (limite,nome) SET (?,?)";
-        int rowAffected = DatabaseUtils.executeUpdate(query,departamentoEntity.limite(),departamentoEntity.nome());
+        return DatabaseUtils.executeInsert(query,departamentoEntity.limite(),departamentoEntity.nome());
     }
 
     public DepartamentoEntity getDepartamentoById(int id) throws SQLException {
