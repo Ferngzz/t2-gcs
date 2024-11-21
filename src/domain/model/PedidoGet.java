@@ -11,4 +11,14 @@ public record PedidoGet(
         String funcionario,
         Status status
 ) {
+
+    @Override
+    public String toString() {
+        return  "ID: " + id + "\n" +
+                "Data de Abertura: " + dataAbertura + "\n" +
+                "Data de Fechamento: " + dataFechamento + "\n" +
+                "Funcionário: " + funcionario + "\n" +
+                "Status: " + status + "\n";
+    }
+
 }

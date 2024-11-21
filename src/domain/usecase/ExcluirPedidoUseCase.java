@@ -10,6 +10,6 @@ public class ExcluirPedidoUseCase {
     }
 
     public boolean excluirPedido(int id) {
-        pedidoRepository.deletePedido(id);
+        return pedidoRepository.deletePedido(id);
     }
 }

@@ -58,14 +58,57 @@ public class PedidoDataSource {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public List<PedidoGet> getPedidosByItem(String item) {
+        String query = "SELECT DISTINCT p.*, ip.*, i.*, f.nome AS 'NomeFuncionario' " +
+                "FROM ITEM i JOIN ITEM_PEDIDO ip ON i.id_item = ip.id_item " +
+                "JOIN PEDIDO p ON p.id_pedido = ip.id_pedido " +
+                "JOIN FUNCIONARIO f ON f.id_funcionario = p.id_funcionario " +
+                "WHERE i.nome LIKE ? ORDER BY ip.id_pedido  ";
 
+        List<PedidoGet> lista = new ArrayList<>();
+
+        try {
+            ResultSet result = DatabaseUtils.executeQuery(query, item);
+
+            while (result.next()) {
+                int id_pedido = result.getInt("id_pedido");
+                Date dataAbertura = result.getDate("data_abertura");
+                LocalDate localDate = dataAbertura.toLocalDate();
+                Date dataFechamento = result.getDate("data_fechamento");
+                LocalDate localDate2 = dataFechamento.toLocalDate();
+                //Funcionario
+                String nomeFuncionario = result.getString("NomeFuncionario");
+
+                Status status = Status.ABERTO;
+
+                if (result.getString("Status").equals("APROVADO")) {
+                    status = Status.APROVADO;
+                } else if (result.getString("Status").equals("FECHADO")) {
+                    status = Status.FECHADO;
+                } else if (result.getString("Status").equals("REPROVADO")) {
+                    status = Status.REPROVADO;
+                }
+
+                lista.add(new PedidoGet(
+                        id_pedido,
+                        localDate,
+                        localDate2,
+                        nomeFuncionario,
+                        status
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Nao existe pedidos com o item: " + item);
+        }
+        return lista;
     }
 
 
     public List<PedidoGet> getPedidos() {
-        String query = "SELECT f.nome as 'NomeFuncionario' , d.nome as 'NomeDepartamento' , p.* FROM FUNCIONARIO f " +
-                "JOIN DEPARTAMENTO d ON f.id_departamento = d.id_departamento " +
+        String query = "SELECT p.*, f.nome as 'NomeFuncionario' FROM FUNCIONARIO f " +
                 "JOIN PEDIDO p ON f.id_funcionario = p.id_funcionario";
         List<PedidoGet> pedidosBanco = new ArrayList<>();
 
@@ -82,8 +125,6 @@ public class PedidoDataSource {
                 //Funcionario
                 String nomeFuncionario = result.getString("NomeFuncionario");
 
-                //Departamento
-                String nomeDepartamento = result.getString("NomeDepartamento");
                 Status status = Status.ABERTO;
 
                 if (result.getString("Status").equals("APROVADO")) {
@@ -109,7 +150,7 @@ public class PedidoDataSource {
         String updateQuery = "UPDATE PEDIDO p SET STATUS = ? WHERE p.id_pedido = ? ";
 
         try {
-            DatabaseUtils.executeUpdate(updateQuery, novoStatus, id);
+            DatabaseUtils.executeUpdate(updateQuery, novoStatus.toString(), id);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -117,15 +158,21 @@ public class PedidoDataSource {
         }
     }
 
-    public void deletePedido(int id) {
-        String deleteQuery = "DELETE FROM PEDIDO p WHERE P.id = ?";
+    public boolean deletePedido(int id) {
+        String deleteQuery = "DELETE FROM PEDIDO p WHERE p.id_pedido = ?";
         try {
-            DatabaseUtils.executeUpdate(deleteQuery, id);
-            System.out.println("Pedido excluído com sucesso!");
 
-        } catch (SQLException e) {
+            if (DatabaseUtils.executeUpdate(deleteQuery, id) != 0) {
+                System.out.println("Pedido excluído com sucesso!");
+                return true;
+            }
+            return false;
+
+        } catch (
+                SQLException e) {
             System.err.println("Pedido nao encontrado pelo id: " + id);
         }
+        return false;
 
     }
 }

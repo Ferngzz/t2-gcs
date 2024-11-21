@@ -32,7 +32,7 @@ public class ItemRepository {
         );
     }
 
-    public List<ItemGet> getAllItens() throws SQLException {
+    public List<ItemGet> getItens() throws SQLException {
         List<ItemGet> entities = itemDataSource.getItens();
         List<ItemGet> itemModels = new ArrayList<>();
 

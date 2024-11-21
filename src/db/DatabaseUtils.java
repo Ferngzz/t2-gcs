@@ -13,9 +13,11 @@ public class DatabaseUtils {
 
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                System.out.println("Connecting to database...");
+                System.out.println("╔══════════════════════════════════════════════════════╗");
+                System.out.println("║                 Connecting to database...            ║");
+                System.out.println("╚══════════════════════════════════════════════════════╝");
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                System.err.println("Connector nao encontrado");
             }
 
             connection = DriverManager.getConnection(url, user, password);

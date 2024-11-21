@@ -14,8 +14,8 @@ public class PedidoRepository {
         return pedidoDataSource.createPedido(pedido, idFuncionario);
     }
 
-    public void deletePedido(int id) {
-        pedidoDataSource.deletePedido(id);
+    public boolean deletePedido(int id) {
+        return pedidoDataSource.deletePedido(id);
     }
 
     public void updatePedido(int id, Status status) {
@@ -24,6 +24,10 @@ public class PedidoRepository {
 
     public List<PedidoGet> getPedidos() {
         return pedidoDataSource.getPedidos();
+    }
+
+    public List<PedidoGet> getPedidosByItem(String item){
+        return pedidoDataSource.getPedidosByItem(item);
     }
 
     public PedidoGet getPedido(int id) {
