@@ -1,6 +1,7 @@
 package data.departamento;
 
 import domain.model.DepartamentoGet;
+import domain.model.DepartamentoInsert;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,24 +14,17 @@ public class DepartamentoRepository {
        this.dapartamentoDataSource = new DepartamentoDataSource();
     }
 
-    public void createDepartamento(DepartamentoGet departamento) throws SQLException {
-        DepartamentoEntity departamentoEntity = new DepartamentoEntity(departamento);
-        dapartamentoDataSource.createDepartamento(departamentoEntity);
+    public void createDepartamento(DepartamentoInsert departamento) throws SQLException {
+
+        DepartamentoEntity departamentoinsert = new DepartamentoEntity(departamento);
+        dapartamentoDataSource.createDepartamento(departamentoinsert);
     }
 
     public DepartamentoGet getDepartamentoById(int id) throws SQLException {
-        DepartamentoEntity departamentoEntity = dapartamentoDataSource.getDepartamentoById(id);
-
-        return new DepartamentoGet(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite());
+        return dapartamentoDataSource.getDepartamentoById(id);
     }
 
     public List<DepartamentoGet> getAllDepartamentos() throws SQLException {
-        List<DepartamentoEntity> departamentos = dapartamentoDataSource.getDepartamentos();
-        List<DepartamentoGet> models = new ArrayList<>();
-
-        for (DepartamentoEntity departamentoEntity : departamentos) {
-            models.add(new DepartamentoGet(departamentoEntity.idDepartamento(),departamentoEntity.nome(),departamentoEntity.limite()));
-        }
-        return models;
+        return dapartamentoDataSource.getDepartamentos();
     }
 }
