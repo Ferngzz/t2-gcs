@@ -38,7 +38,7 @@ public class ItemRepository {
 
         entities.forEach(entity ->
                 itemModels.add(new ItemGet(
-                        entity.idItem(),
+                        entity.id(),
                         entity.nome(),
                         entity.valorUnitario()
                 )));

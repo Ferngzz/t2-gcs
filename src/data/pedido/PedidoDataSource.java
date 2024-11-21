@@ -124,7 +124,7 @@ public class PedidoDataSource {
             System.out.println("Pedido excluído com sucesso!");
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("Pedido nao encontrado pelo id: " + id);
         }
 
     }

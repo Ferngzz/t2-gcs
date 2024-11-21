@@ -1,6 +1,8 @@
 import db.DatabaseUtils;
 import domain.model.DepartamentoGet;
 import domain.model.FuncionarioGet;
+import domain.model.PedidoInsert;
+import domain.usecase.RegistraPedidoUseCase;
 import domain.usecase.TrocaUsuarioUseCase;
 //import domain.usecase.InitializeUseCase;
 //import domain.usecase.TrocaUsuarioUseCase;
@@ -83,25 +85,25 @@ public class Empresa {
                         trocaUsuario();
                         break;
                     case "Registrar Pedido":
-//                        registrarPedido();
+                        registrarPedido();
                         break;
                     case "Excluir Pedido":
-//                        excluiPedido();
+//                        excluirPedido();
                         break;
                     case "Avaliar Pedido":
-//                        avaliaPedido();
+//                        avaliarPedido();
                         break;
                     case "Listar Pedidos":
 //                        listarPedidos();
                         break;
                     case "Buscar pedido Por Funcionario":
-//                        buscaPedidosPorFuncionario();
+//                        buscarPedidosPorFuncionario();
                         break;
                     case "Buscar Pedido Por Descricao":
-//                        buscaPedidosPorDescricao();
+//                        buscarPedidosPorDescricao();
                         break;
                     case "Mostrar Estatisticas":
-//                        mostraEstatisticas();
+//                        mostrarEstatisticas();
                         break;
                     default:
                         break;
@@ -115,10 +117,10 @@ public class Empresa {
                         trocaUsuario();
                         break;
                     case "Registrar Pedido":
-//                        registrarPedido();
+                        registrarPedido();
                         break;
                     case "Excluir Pedido":
-//                        excluiPedido();
+//                        excluirPedido();
                         break;
                     default:
                         break;
@@ -179,8 +181,9 @@ public class Empresa {
 
         return false;
     }
-
-    private boolean registraPedido() {
-
+    //TODO
+    private boolean registrarPedido() {
+        RegistraPedidoUseCase registraPedidoUseCase = new RegistraPedidoUseCase();
+        return true;
     }
 }
