@@ -4,7 +4,7 @@
 #### • <a href="https://dev.mysql.com/downloads/connector/j/"> MySQL Connector</a>
 
 
-### Para criar container com o banco no terminal:
+### Para criar o container com o banco no terminal:
 ```
  docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=t2gcs -p 3306:3306 -d mysql:latest
 ```
