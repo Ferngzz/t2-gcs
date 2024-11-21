@@ -6,7 +6,11 @@ import domain.model.FuncionarioGet;
 import java.sql.SQLException;
 
 public class TrocaUsuarioUseCase {
-    FuncionarioRepository funcionarioRepository = new FuncionarioRepository();
+    private final FuncionarioRepository funcionarioRepository;
+
+    public TrocaUsuarioUseCase() {
+        this.funcionarioRepository = new FuncionarioRepository();
+    }
 
     public FuncionarioGet trocaUsuario(int id) {
         try {
